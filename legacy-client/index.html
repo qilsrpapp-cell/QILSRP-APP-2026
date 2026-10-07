@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QILSRP Leadership App</title>
+  <link rel="stylesheet" href="./code/style.css" />
+  <script type="module" src="./code/script.js"></script>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <h1>QILSRP Leadership App</h1>
+    <label>Email/Mobile</label>
+    <input type="text" id="login-contact" placeholder="you@email.com" />
+    <label>Password</label>
+    <input type="password" id="login-password" placeholder="Password" />
+    <button id="login-submit">Login</button>
+    <p id="login-error">Invalid email or password.</p>
+    <button id="go-to-register">Don't have an account?</button>
+  </div>
+
+  <!-- REGISTRATION -->
+   <div id="register-screen" style="display:none;">
+
+   </div>
+
+  <!-- MAIN APP -->
+  <div id="app" style="display:none;">
+    <header>
+      <h1>QILSRP Leadership App</h1>
+      <span id="header-user"></span>
+    </header>
+    <nav id="nav"></nav>
+    <div id="page"></div>
+  </div>
+
+</body>
+
+</html>

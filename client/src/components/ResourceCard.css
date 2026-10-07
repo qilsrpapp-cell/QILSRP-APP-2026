@@ -1,0 +1,95 @@
+.resource-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.resource-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+  transform: translateY(-2px);
+}
+
+.resource-card-image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+}
+
+.resource-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.resource-card-body {
+  background: #d6e8f5;
+  padding: 22px 24px 20px;
+}
+
+.resource-card-title {
+  color: #8b1a1a;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: Georgia, 'Times New Roman', serif;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.resource-card-desc {
+  color: #1a7a6a;
+  font-size: 15px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.resource-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resource-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resource-card-type {
+  background: #1a7a6a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+}
+
+.resource-card-size {
+  color: #1a7a6a;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.resource-card-download {
+  background: transparent;
+  border: none;
+  color: #1a7a6a;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.resource-card-download:hover {
+  background: rgba(26, 122, 106, 0.12);
+  color: #145c50;
+}

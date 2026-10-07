@@ -1,0 +1,317 @@
+/* ---- Page shell ---- */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #0d2b47 0%, #0a2238 60%, #071828 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Decorative background rings (aboriginal-inspired) ---- */
+.login-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.login-ring-1 {
+  width: 600px;
+  height: 600px;
+  bottom: -200px;
+  right: -150px;
+  border-width: 40px;
+  border-color: rgba(255, 255, 255, 0.03);
+}
+
+.login-ring-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  right: -50px;
+  border-width: 30px;
+  border-color: rgba(26, 122, 106, 0.08);
+}
+
+.login-ring-3 {
+  width: 220px;
+  height: 220px;
+  bottom: 20px;
+  right: 60px;
+  border-width: 20px;
+  border-color: rgba(26, 122, 106, 0.12);
+}
+
+/* ---- Main content column ---- */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Branding block ---- */
+.login-branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.login-logo {
+  height: 80px;
+  width: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.login-brand-title {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin: 0;
+}
+
+.login-brand-sub {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* ---- Login card ---- */
+.login-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 40px 44px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.login-card h2 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+
+.login-card .subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  margin: 0 0 28px 0;
+}
+
+/* ---- Fields ---- */
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.login-field label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.login-field input {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.login-field input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.login-field input:focus {
+  border-color: #1a7a6a;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Checkboxes ---- */
+.checkbox-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.checkbox-row input[type="checkbox"] {
+  accent-color: #1a7a6a;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* ---- Error message ---- */
+.login-error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin: 0 0 14px 0;
+  padding: 10px 14px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 8px;
+}
+
+/* ---- Submit button ---- */
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  background: #1a7a6a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  margin-bottom: 20px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(26, 122, 106, 0.4);
+}
+
+.login-btn:hover {
+  background: #145c50;
+  box-shadow: 0 4px 18px rgba(26, 122, 106, 0.5);
+}
+
+.admin-note {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 10px 0;
+}
+
+.register-note {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+.register-link {
+  color: #1a7a6a;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.register-link:hover {
+  color: #22a08a;
+}
+
+/* ---- Footer logo ---- */
+.login-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.login-footer-logo {
+  width: 140px;
+  object-fit: contain;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+
+/* ---- Cultural notice overlay ---- */
+.cultural-notice-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.cultural-notice-card {
+  background: linear-gradient(160deg, #0d2b47 0%, #0a2238 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 44px 48px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.cultural-notice-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.cultural-notice-card h2 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  font-family: 'Inter', sans-serif;
+}
+
+.cultural-notice-card p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.75;
+  margin-bottom: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+.cultural-notice-card p:last-of-type {
+  margin-bottom: 32px;
+}
+
+.notice-acknowledge-btn {
+  padding: 13px 36px;
+  background: #1a7a6a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(26, 122, 106, 0.4);
+  transition: background 0.2s;
+}
+
+.notice-acknowledge-btn:hover {
+  background: #145c50;
+}

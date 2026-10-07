@@ -1,0 +1,188 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #000;
+}
+
+#app {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+header {
+  border-bottom: 1px solid #000;
+  padding: 10px;
+}
+
+header h1 {
+  font-size: 1rem;
+  margin: 0;
+  display: inline;
+}
+
+header span {
+  float: right;
+  font-size: 0.85rem;
+}
+
+nav {
+  border-bottom: 1px solid #ccc;
+  padding: 6px;
+}
+
+nav button {
+  margin-right: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+nav button.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#page {
+  padding: 12px;
+}
+
+h2 {
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 0.95rem;
+  margin: 0 0 6px 0;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+}
+
+input[type=text],
+input[type=password],
+input[type=date],
+input[type=file],
+select,
+textarea {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+}
+
+th {
+  background: #eee;
+}
+
+.msg-list {
+  border: 1px solid #ccc;
+  padding: 8px;
+  min-height: 60px;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.msg {
+  margin-bottom: 4px;
+}
+
+.msg-input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.msg-input-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* Flexbox configuration for horizontal alignment */
+.flexbox {
+  display: flex;
+}
+.right-align {
+  margin-left: auto;
+}
+.horizontal-gap {
+  margin-left: 5px;
+}
+
+#login-screen {
+  max-width: 300px;
+  margin: 60px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+#register-screen {
+  max-width: 300px;
+  margin: 60px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+
+#login-screen h1 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+#login-error {
+  color: red;
+  font-size: 0.8rem;
+  display: none;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.8rem;
+  display: none;
+  margin-top: 4px;
+}
+
+p {
+  font-size: 0.9rem;
+}
+
+small {
+  color: #555;
+}

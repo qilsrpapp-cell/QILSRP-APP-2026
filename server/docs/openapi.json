@@ -1,0 +1,3535 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "QILSRP App API",
+    "description": "This API provides access to the QILSRP Leadership Program website"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Enter JWT Bearer token **_only_**"
+      }
+    }
+  },
+  "paths": {
+    "/user/login": {
+      "post": {
+        "description": "Log in to an existing user account. A request body containing the user credentials must be sent.",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "description": "The credentials of the user to log in. Click on 'Schema' to see all options.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "examples": [
+                          "admin1@email.com"
+                        ]
+                      },
+                      "password": {
+                        "type": "string",
+                        "examples": [
+                          "pass"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "mobile": {
+                        "type": "integer",
+                        "examples": [
+                          412345678
+                        ]
+                      },
+                      "password": {
+                        "type": "string",
+                        "examples": [
+                          "pass"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Log in successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "examples": [
+                        "ajsonwebtoken"
+                      ]
+                    },
+                    "tokenType": {
+                      "type": "string",
+                      "examples": [
+                        "Bearer"
+                      ]
+                    },
+                    "expiresIn": {
+                      "type": "number",
+                      "examples": [
+                        86400
+                      ]
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "examples": [
+                        "15"
+                      ]
+                    },
+                    "name": {
+                      "type": "string",
+                      "examples": [
+                        "Michelle Rivers"
+                      ]
+                    },
+                    "email": {
+                      "type": "string",
+                      "examples": [
+                        "mrivers@email.com"
+                      ]
+                    },
+                    "role": {
+                      "type": "string",
+                      "examples": [
+                        "ranger"
+                      ]
+                    },
+                    "cohort": {
+                      "type": "string",
+                      "examples": [
+                        "Brisbane Cohort"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid log in request",
+            "content": {
+              "application/json": {
+                "oneOf": [
+                  {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete, password is required"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete, one of email or mobile is required"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Log in failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Incorrect email/mobile or password"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User verification pending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User has not yet been verified by an administrator"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/password": {
+      "put": {
+        "description": "Change the currently authenticated user's password",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "An object containing the user's current and new password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currentPassword": {
+                    "type": "string",
+                    "examples": [
+                      "CurrentPassword1!"
+                    ]
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "examples": [
+                      "NewPassword1!"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User password updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User password updated"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Incorrect password"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete, both currentPassword and newPassword are required"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain at least 8 characters"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a capital letter"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a number"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a special character"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Sends a request for a new user account, or if the user is an admin, immediately creates the account. A request body containing the user to be registered must be sent.",
+        "requestBody": {
+          "description": "An object containing the name, email, password, cohort, and role of the user to be registered.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "examples": [
+                      "Mike Smith"
+                    ]
+                  },
+                  "email": {
+                    "type": "string",
+                    "examples": [
+                      "mike@gmail.com"
+                    ]
+                  },
+                  "password": {
+                    "type": "string",
+                    "examples": [
+                      "Password1!"
+                    ]
+                  },
+                  "cohort": {
+                    "type": "string",
+                    "examples": [
+                      "Brisbane Cohort"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "examples": [
+                      "ranger"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User created. If you are not an admin please wait to be verified."
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Click on 'Schema' to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete: name, password, cohort, and role are required."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete: one of email address or mobile number is required."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Email must be a valid email"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain at least 8 characters"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a capital letter"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a number"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a special character"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Role must be one of 'student', 'ranger', or 'admin'"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Cohort does not exist"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User already exists"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/verify/{id}": {
+      "put": {
+        "description": "Verify the specified pending user as an admin.",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User verified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User has been verified"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Current user is not authorised to perform this function"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found or is not pending verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User not found or is not pending verification"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "description": "Returns a selection of users' profile information",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "If this parameter is present, only users with this name will be returned (case-sensitive)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "If this parameter is present, only users with this email will be returned",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "If this parameter is present, only users with this status will be returned (admin-only)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Pending",
+                "Active"
+              ]
+            }
+          },
+          {
+            "name": "cohort",
+            "in": "query",
+            "description": "If this parameter is present, only users in the specified cohort will be returned (admin-only)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "description": "If this parameter is present, only users in the specified role will be returned",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "student",
+                "ranger",
+                "admin"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of objects containing user_id, name, email, status, date created, role, and cohort. If a non-privilidged user uses this endpoint, the status, date created, and cohort information will be omitted, and will only return verified users within that user's cohort.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "number",
+                        "examples": [
+                          15
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "examples": [
+                          "Michael"
+                        ]
+                      },
+                      "email": {
+                        "type": "string",
+                        "examples": [
+                          "mike@gmail.com"
+                        ]
+                      },
+                      "status": {
+                        "type": "string",
+                        "examples": [
+                          "Active"
+                        ]
+                      },
+                      "created": {
+                        "type": "string",
+                        "examples": [
+                          "2000-11-11 11:11:11"
+                        ]
+                      },
+                      "role": {
+                        "type": "string",
+                        "examples": [
+                          "ranger"
+                        ]
+                      },
+                      "cohort": {
+                        "type": "string",
+                        "examples": [
+                          "Brisbane Cohort"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "put": {
+        "description": "Provide the current user's profile information (in the body of the request)",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "An object containing various user details.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "examples": [
+                      "Mike Smith"
+                    ]
+                  },
+                  "email": {
+                    "type": "string",
+                    "examples": [
+                      "mike@gmail.com"
+                    ]
+                  },
+                  "cohort": {
+                    "type": "string",
+                    "examples": [
+                      "Brisbane Cohort"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "examples": [
+                      "ranger"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User Bob has been updated"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Logged-in user is not an admin or does not match the user whose profile you are attempting to modify",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Forbidden"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No user was found containing this email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete: name, cohort, and role are required."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete: one of email address or mobile number is required."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Email must be a valid email"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain at least 8 characters"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a capital letter"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a number"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Password must contain a special character"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Role must be one of 'student', 'ranger', or 'admin'"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Cohort does not exist"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes the user",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User has been deleted"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Logged-in user is not an admin or does not match the user whose profile you are attempting to modify",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Forbidden"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No user was found containing this email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "User not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cohort/": {
+      "post": {
+        "tags": [
+          "Cohort"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Creates a new cohort (admin-only)",
+        "requestBody": {
+          "description": "An object with the name of the cohort",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "examples": [
+                      "Brisbane Cohort"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cohort successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Cohort created"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Request body incomplete: name is required"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Current user is not authorised to perform this function"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cohort already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Cohort already exists"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Returns all current cohorts",
+        "tags": [
+          "Cohort"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of cohort names and the number of users within each. Only includes a user count if the user is an admin.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "examples": [
+                          "Brisbane Cohort"
+                        ]
+                      },
+                      "userCount": {
+                        "type": "integer",
+                        "examples": [
+                          15
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cohort/{name}": {
+      "delete": {
+        "description": "Deletes the cohort (admin-only)",
+        "tags": [
+          "Cohort"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "The name of the cohort",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Cohort with name Brisbane Cohort has been deleted"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "There are still users belonging to this cohort",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "There are still users belonging to this cohort"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Current user is not authorised to perform this function"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No cohort was found containing this name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Cohort not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/": {
+      "post": {
+        "description": "Allows an admin to create a new event",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "The details of the event",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "examples": [
+                      "Melissa Stone"
+                    ]
+                  },
+                  "datetime": {
+                    "type": "string",
+                    "examples": [
+                      "2030-01-01 11:00:00"
+                    ]
+                  },
+                  "location": {
+                    "type": "string",
+                    "examples": [
+                      "Archer Point Site"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "examples": [
+                      "This planned burn will maintain the health of our bushland"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event with ID 1 successfully created"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Click on 'Schema' to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete: name, datetime, location, and description are required."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid input: datetime must be a real time in format YYYY-MM-DD HH:MM."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid input: datetime must be a time in the future."
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Current user is not authorised to perform this function"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Returns all of the user's events, confirmed and pending",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "If this parameter is present, only events in this year will be returned",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "description": "If this parameter is present, only events in this month will be returned. Must also include year.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of the user's event details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "event_id": {
+                        "type": "integer",
+                        "examples": [
+                          15
+                        ]
+                      },
+                      "user_id": {
+                        "type": "integer",
+                        "examples": [
+                          25
+                        ]
+                      },
+                      "user": {
+                        "type": "string",
+                        "examples": [
+                          "Melissa Stone"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "examples": [
+                          "Planned Burn"
+                        ]
+                      },
+                      "datetime": {
+                        "type": "string",
+                        "examples": [
+                          "2030-01-01 11:00:00"
+                        ]
+                      },
+                      "location": {
+                        "type": "string",
+                        "examples": [
+                          "Archer Point Site"
+                        ]
+                      },
+                      "description": {
+                        "type": "string",
+                        "examples": [
+                          "This planned burn will maintain the health of our bushland"
+                        ]
+                      },
+                      "confirmed": {
+                        "type": "boolean",
+                        "examples": [
+                          "true"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Likely an invalid year/month value. Please contact the devs if this is incorrect."
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/{id}": {
+      "put": {
+        "description": "Update an event",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the eventt",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated details of the event",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "examples": [
+                      "Planned Burn"
+                    ]
+                  },
+                  "datetime": {
+                    "type": "string",
+                    "examples": [
+                      "2030-01-01 11:00"
+                    ]
+                  },
+                  "location": {
+                    "type": "string",
+                    "examples": [
+                      "Archer Point Site"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "examples": [
+                      "This planned burn will maintain the health of our bushland"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event with ID 1 successfully updated"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Click on 'Schema' to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body incomplete: name, datetime, location, and description are required."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid input: datetime must be a real time in format YYYY-MM-DD HH:MM."
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid input: datetime must be a time in the future."
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event was found containing this ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes the event",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event with ID 1 has been deleted"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event was found containing this ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/{id}/members": {
+      "post": {
+        "description": "Add an array of users to the event",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "An array of user IDs",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "examples": [
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added members to the event successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Added members to the event successfully"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "oneOf": [
+                  {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Request body invalid: the array of user IDs must be integers"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "One or more users are already invited to this event"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "No event was found containing this ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Returns all of the event's users, confirmed and pending",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of the users' id, name, email, mobile, role, and invitation status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer",
+                        "examples": [
+                          15
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "examples": [
+                          "Michelle Rivers"
+                        ]
+                      },
+                      "email": {
+                        "type": "string",
+                        "examples": [
+                          "ranger0@email.com"
+                        ]
+                      },
+                      "mobile": {
+                        "type": "string",
+                        "examples": [
+                          "0400000000"
+                        ]
+                      },
+                      "role": {
+                        "type": "string",
+                        "examples": [
+                          "ranger"
+                        ]
+                      },
+                      "confirmed": {
+                        "type": "boolean",
+                        "examples": [
+                          "true"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event was found containing this ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Removes an array of users from the event",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "An array of user IDs",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "examples": [
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Removed members from the event successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Removed members from the event successfully"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event was found containing this ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/{id}/confirm": {
+      "post": {
+        "description": "Confirm that the current user will be attending the event",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event attendance confirmed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event attendance confirmed"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header ('Bearer token') not found"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "JWT token has expired"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Invalid JWT token"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string",
+                          "examples": [
+                            "Authorization header is malformed"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Logged-in user is not an admin or does not match the user whose event invitation you are attempting to modify",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Forbidden"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event was found containing this ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Event not found"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
