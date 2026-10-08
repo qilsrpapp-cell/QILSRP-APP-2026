@@ -1,7 +1,6 @@
 import { authFetch } from './auth';
 import defaultResourceImage from '../assets/logo.jpg';
-
-const API_BASE = 'http://localhost:3000';
+import { API_BASE } from '../config';
 
 export async function fetchCohorts() {
   const res = await authFetch(`${API_BASE}/cohort/`);
@@ -106,12 +105,10 @@ export async function createResourceUpload(resourceData) {
   };
 }
 
-// Uploads the file to S3 via the local Vite proxy using the presigned URL
+// Uploads the file straight to S3 using the presigned URL.
+// The bucket's CORS rules must allow this site's origin.
 export async function uploadResourceFile(uploadURL, file) {
-  const s3URL = new URL(uploadURL);
-  const proxyURL = `/s3-upload${s3URL.pathname}${s3URL.search}`;
-
-  const res = await fetch(proxyURL, {
+  const res = await fetch(uploadURL, {
     method: 'PUT',
     headers: { 'Content-Type': file.type },
     body: file,

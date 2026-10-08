@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000';
+import { API_BASE } from '../config';
 
 const TOKEN_KEY = 'qilsrp.token';
 const USER_KEY  = 'qilsrp.user';

@@ -1,6 +1,5 @@
 import { authFetch } from './auth';
-
-const API_BASE = 'http://localhost:3000';
+import { API_BASE } from '../config';
 
 // Parses "h:mm AM/PM" into minutes for same-day sorting. All-day events sort first.
 function parseTimeToMinutes(timeStr) {

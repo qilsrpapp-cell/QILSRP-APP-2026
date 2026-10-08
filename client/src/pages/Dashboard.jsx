@@ -6,6 +6,7 @@ import { getUser, authFetch, isAdmin } from '../services/auth';
 import { getConversations } from '../services/messages';
 import {fetchResources, fetchCohorts, fetchResourceDownloadUrl, createResourceUpload, uploadResourceFile, getResourceFileMetadata} from '../services/resources';
 import './Dashboard.css';
+import { API_BASE } from '../config';
 
 function getInitials(name) {
   if (!name) return 'R';
@@ -196,7 +197,7 @@ async function handleDashboardDownload(resource) {
     useEffect(() => {
       async function loadEvents() {
         try {
-            const response = await authFetch('http://localhost:3000/event/');
+            const response = await authFetch(`${API_BASE}/event/`);
 
           if (!response.ok) {
               throw new Error('Unable to load dashboard events.');

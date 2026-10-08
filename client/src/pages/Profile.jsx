@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import { getUser, authFetch } from '../services/auth';
 import './Profile.css';
+import { API_BASE } from '../config';
 
 export default function Profile() {
   const loggedInUser = getUser();
@@ -55,14 +56,14 @@ export default function Profile() {
       setProfileError('');
 
     try {
-      const cohortResponse = await authFetch('http://localhost:3000/cohort/');
+      const cohortResponse = await authFetch(`${API_BASE}/cohort/`);
       const cohortData = await cohortResponse.json().catch(() => []);
 
       if (cohortResponse.ok && Array.isArray(cohortData)) {
         setCohorts(cohortData);
       }
         const response = await authFetch(
-            `http://localhost:3000/user?email=${encodeURIComponent(loggedInUser?.email || '')}`
+            `${API_BASE}/user?email=${encodeURIComponent(loggedInUser?.email || '')}`
             );
         const data = await response.json().catch(() => []);
 
@@ -173,7 +174,7 @@ async function handleProfileSave(event) {
 
     try{
 const response = await authFetch(
-    `http://localhost:3000/user/${loggedInUser.user_id}`,
+    `${API_BASE}/user/${loggedInUser.user_id}`,
   {
     method: 'PUT',
     headers: {
@@ -315,7 +316,7 @@ function handlePasswordChange(event) {
 
     try {
       const response = await authFetch(
-        'http://localhost:3000/user/password',
+        `${API_BASE}/user/password`,
         {
           method: 'PUT',
           headers: {'Content-Type': 'application/json'},

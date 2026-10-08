@@ -1,6 +1,5 @@
 import { authFetch } from "./auth";
-
-const API_BASE = 'http://localhost:3000';
+import { API_BASE } from '../config';
 
 export async function getUsers(filters = {}) {
     const params = new URLSearchParams();

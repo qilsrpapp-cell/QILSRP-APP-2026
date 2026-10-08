@@ -1,6 +1,5 @@
 import { authFetch } from './auth';
-
-const API_BASE = 'http://localhost:3000';
+import { API_BASE } from '../config';
 
 export async function verifyUser(email) {
   const res = await authFetch(`${API_BASE}/user/verify/${encodeURIComponent(email)}`, {
