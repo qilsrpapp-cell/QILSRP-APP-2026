@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
 import { register } from '../services/auth';
 import './Register.css';
+import { resolveAsset } from '../utils/assets';
 
 const PASSWORD_RULE = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 // Matches the backend's Australian mobile format (04XXXXXXXX or +614XXXXXXXX)
@@ -200,7 +201,7 @@ export default function Register() {
 
         <div className="register-footer">
           <img
-            src="/src/assets/qld-gov.png"
+            src={resolveAsset('/src/assets/qld-gov.png')}
             alt="Queensland Government"
             className="register-footer-logo"
           />

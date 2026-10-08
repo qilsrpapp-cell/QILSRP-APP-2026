@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
 import { login, getLoginLockStatus } from '../services/auth';
 import './Login.css';
+import { resolveAsset } from '../utils/assets';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -141,7 +142,7 @@ export default function Login() {
 
         <div className="login-footer">
           <img
-            src="/src/assets/qld-gov.png"
+            src={resolveAsset('/src/assets/qld-gov.png')}
             alt="Queensland Government"
             className="login-footer-logo"
           />

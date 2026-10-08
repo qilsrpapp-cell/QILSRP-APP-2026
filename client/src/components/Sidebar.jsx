@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logout, getUser } from '../services/auth';
 import './Sidebar.css';
+import { resolveAsset } from '../utils/assets';
 
 // `built: true` items have a real route in App.jsx; the rest render disabled
 const navItems = [
@@ -59,7 +60,7 @@ export default function Sidebar() {
             className={`sidebar-btn ${location.pathname.startsWith(item.path) ? 'active' : ''} ${!item.built ? 'sidebar-btn-disabled' : ''}`}
             onClick={() => handleNavClick(item)}
           >
-            <img className="sidebar-btn-icon" src={item.icon} alt="" />
+            <img className="sidebar-btn-icon" src={resolveAsset(item.icon)} alt="" />
             <span className={!item.built ? 'sidebar-btn-wip' : ''}>{item.label}</span>
           </button>
         ))}
@@ -74,7 +75,7 @@ export default function Sidebar() {
         <button className="sidebar-logout-btn" onClick={handleLogout}>
           Sign Out
         </button>
-        <img src="/src/assets/qld-gov.png" alt="Queensland Government" className="sidebar-footer-logo" />
+        <img src={resolveAsset('/src/assets/qld-gov.png')} alt="Queensland Government" className="sidebar-footer-logo" />
       </div>
     </div>
   );
