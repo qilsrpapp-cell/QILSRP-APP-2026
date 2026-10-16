@@ -55,7 +55,7 @@ export default function Register() {
 
     const { firstName, lastName, email, phone, rangerGroup, role, password, confirmPassword } = form;
 
-    if (!firstName.trim() || !lastName.trim() || !email.trim() || !phone.trim() || !rangerGroup.trim() || !role || !password || !confirmPassword) {
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !phone.trim() || !role || !password || !confirmPassword) {
       setError('Please fill in all mandatory fields.');
       return;
     }
