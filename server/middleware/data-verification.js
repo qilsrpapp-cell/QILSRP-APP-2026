@@ -92,14 +92,18 @@ const roles = ['student', 'ranger', 'admin']
  * @returns An error if any field is null
  */
 const verifyUserData = (req, res, next) => {
-  const { name, email, mobile, cohort, role } = req.body ?? {}
+  const { name, email, mobile, role } = req.body ?? {}
+
+  // Cohort is optional: a blank value is stored as NULL, a supplied one is checked below
+  const cohort = typeof req.body?.cohort === 'string' && req.body.cohort.trim() ? req.body.cohort.trim() : null
+  if (req.body) req.body.cohort = cohort
 
   if (req.url == '/register') {
     // Registration has an additional password field
     const password = req.body.password ?? null
 
-    if (!name || !password || !cohort || !role) {
-      let e = Error("Request body incomplete: name, password, cohort, and role are required.")
+    if (!name || !password || !role) {
+      let e = Error("Request body incomplete: name, password, and role are required.")
       e.status = 400
       throw e
 
@@ -110,8 +114,8 @@ const verifyUserData = (req, res, next) => {
   }
   else {
 
-    if (!name || !cohort || !role) {
-      let e = Error("Request body incomplete: name, cohort, and role are required.")
+    if (!name || !role) {
+      let e = Error("Request body incomplete: name and role are required.")
       e.status = 400
       throw e
 
@@ -148,7 +152,7 @@ const verifyUserData = (req, res, next) => {
 
   }
 
-  if (role != "admin") {
+  if (role != "admin" && cohort) {
     // Check if cohort exists
     req.db('cohort')
       .count('*')
